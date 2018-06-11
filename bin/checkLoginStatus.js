@@ -1,8 +1,7 @@
 
 var url = "https://www.mi.com/index.html";
 var fs = require('fs');
-var content = fs.read(fs.workingDirectory+'/config/mi.json');
-var data = JSON.parse(content);
+var user = JSON.parse(fs.read(fs.workingDirectory+'/config/user.json'));
 
 
 var page = require('webpage').create();    
@@ -24,7 +23,7 @@ page.onAlert = function(test){
 }
 
 function setCookies(){
-    var jsonList = data.user.cookies;
+    var jsonList = user.cookies;
     jsonList.forEach(function(cook){  
         cook.expires = (new Date()).getTime() + (1000 * 60 * 60 );
         phantom.addCookie(cook);

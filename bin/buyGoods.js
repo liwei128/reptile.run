@@ -57,7 +57,7 @@ function buyGoods(goodsUrl,select){
             setTimeout(function(){
                 setCookies();
                 page.evaluate(function(){
-                    $("#J_buyBtnBox>li>a").click(); 
+		     $("#J_buyBtnBox>li>a").click();
                 }); 
 				console.log("success");
             },600*select.length) ;

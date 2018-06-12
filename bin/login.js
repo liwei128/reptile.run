@@ -1,8 +1,6 @@
 var fs = require('fs');
 var url = "https://account.xiaomi.com/pass/serviceLogin?callback=https%3A%2F%2Forder.mi.com%2Flogin%2Fcallback%3Ffollowup%3Dhttps%253A%252F%252Fwww.mi.com%252Findex.html%26sign%3DMjM0MWU0NjBlOTU1YzY4NGQzOTc3MDk4N2M2MjQ5Y2ZiZTMxNTFlZQ%2C%2C&sid=mi_eshop&_bannerBiz=mistore&_qrsize=180";
-var content = fs.read(fs.workingDirectory+'/config/mi.json');
-var user = JSON.parse(content).user;
-
+var user = JSON.parse(fs.read(fs.workingDirectory+'/config/user.json'));
 
 var page = require('webpage').create();    
 var settings = {
@@ -17,7 +15,7 @@ page.settings.loadImages = true;
 page.settings.resourceTimeout = 20000; 
 window.setTimeout(function () {
             phantom.exit();
-        }, 10000);
+        }, 12000);
 page.onAlert = function(test){
     console.log(test);
 }

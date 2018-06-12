@@ -1,8 +1,10 @@
 var fs = require('fs');
-var content = fs.read(fs.workingDirectory+'/config/mi.json');
-var data = JSON.parse(content);
+var goodsInfo = JSON.parse(fs.read(fs.workingDirectory+'/config/goodsInfo.json'));
+var user = JSON.parse(fs.read(fs.workingDirectory+'/config/user.json'));
 var index = 0;
-  
+var buyUrl = []; 
+
+
 var settings = {
   operation: "GET",
   encoding: "utf-8",
@@ -13,7 +15,7 @@ var settings = {
 }; 
 
 function setCookies(){
-    var jsonList = data.user.cookies;
+    var jsonList = user.cookies;
     jsonList.forEach(function(cook){  
         cook.expires = (new Date()).getTime() + (1000 * 60 * 60 );
         phantom.addCookie(cook);
@@ -23,7 +25,7 @@ function setCookies(){
 
 setTimeout(function () {
         phantom.exit();
-    }, 10000);
+    }, 12000);
 
 var  page = require('webpage').create(); 
 page.settings.loadImages = false;
@@ -32,6 +34,15 @@ page.settings.resourceTimeout = 8000;
 page.onAlert = function(test){
     console.log(test);
 }
+page.onResourceRequested = function(requestData){
+	var fdStart = requestData.url.indexOf("https://cart.mi.com/cart/add/");
+	if(fdStart == 0){
+		buyUrl[buyUrl.length]=requestData.url;
+		console.log(JSON.stringify(buyUrl));
+	}
+	
+}
+
 function start(goodsUrl,select){
 
     setCookies();
@@ -45,13 +56,13 @@ function buyGoods(goodsUrl,select){
              page.injectJs("./zepto.min.js",function(){
              });
 			//选择版本颜色保障服务等	
-			for (var i=0;i<select.length;i++){
+			for (var i = 0;i<select.length;i++){
 				setTimeout(function(){
 					page.evaluate(function(i,j){
 						$(".list-wrap#J_list >div").eq(i).children("ul").children("li").eq(j).click(); 
 					},index,select[index]);
 					index++;
-				},600*i);
+				},800*i);
 			}
             //提交购物车
             setTimeout(function(){
@@ -59,17 +70,19 @@ function buyGoods(goodsUrl,select){
                 page.evaluate(function(){
 		     $("#J_buyBtnBox>li>a").click();
                 }); 
-				console.log("success");
-            },600*select.length) ;
+            },800*select.length) ;
 			//退出
 			setTimeout(function(){
+				if(buyUrl.length==0){
+					console.log(JSON.stringify(buyUrl));
+				}
                phantom.exit();
-            },600*(select.length+1)) ;
-        },600);
+            },800*(select.length+1)) ;
+        },1000);
 		
     });
 }
-start(data.goodsInfo.url,data.goodsInfo.params_index);
+start(goodsInfo.url,goodsInfo.params_index);
 
 
 

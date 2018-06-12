@@ -37,8 +37,7 @@ page.onAlert = function(test){
 page.onResourceRequested = function(requestData){
 	var fdStart = requestData.url.indexOf("https://cart.mi.com/cart/add/");
 	if(fdStart == 0){
-		buyUrl[buyUrl.length]=requestData.url;
-		console.log(JSON.stringify(buyUrl));
+		buyUrl[buyUrl.length] = requestData.url;
 	}
 	
 }
@@ -73,6 +72,7 @@ function buyGoods(goodsUrl,select){
             },800*select.length) ;
 			//退出
 			setTimeout(function(){
+				console.log(JSON.stringify(buyUrl));
                phantom.exit();
             },800*(select.length+1)) ;
         },1000);

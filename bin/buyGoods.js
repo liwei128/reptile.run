@@ -68,14 +68,11 @@ function buyGoods(goodsUrl,select){
             setTimeout(function(){
                 setCookies();
                 page.evaluate(function(){
-		     $("#J_buyBtnBox>li>a").click();
+                	$("#J_buyBtnBox>li>a").click();
                 }); 
             },800*select.length) ;
 			//退出
 			setTimeout(function(){
-				if(buyUrl.length==0){
-					console.log(JSON.stringify(buyUrl));
-				}
                phantom.exit();
             },800*(select.length+1)) ;
         },1000);

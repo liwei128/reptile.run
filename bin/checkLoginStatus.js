@@ -13,7 +13,7 @@ var settings = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
   }
 };  
-page.settings.loadImages = true;
+page.settings.loadImages = false;
 page.settings.resourceTimeout = 20000; 
 window.setTimeout(function () {
             phantom.exit();

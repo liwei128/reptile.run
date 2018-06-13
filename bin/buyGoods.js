@@ -42,24 +42,25 @@ page.onResourceRequested = function(requestData){
 	
 }
 
-function start(goodsUrl,select){
+function start(goodsUrl,selectList){
 
     setCookies();
-    buyGoods(goodsUrl,select);
+    buyGoods(goodsUrl,selectList);
 }
 
-function buyGoods(goodsUrl,select){
+function buyGoods(goodsUrl,selectList){
 	var s= new Date().getTime();
     page.open(goodsUrl,settings,function (status) { 
         setTimeout(function(){
              page.injectJs("./zepto.min.js",function(){
              });
 			//选择版本颜色保障服务等	
-			for (var i = 0;i<select.length;i++){
+             var u = 0;
+			for (var i = 0;i<selectList.length;i++){
 				setTimeout(function(){
 					page.evaluate(function(i,j){
 						$(".list-wrap#J_list >div").eq(i).children("ul").children("li").eq(j).click(); 
-					},index,select[index]);
+					},selectList[index].index,selectList[index].value);
 					index++;
 				},800*i);
 			}
@@ -69,12 +70,12 @@ function buyGoods(goodsUrl,select){
                 page.evaluate(function(){
                 	$("#J_buyBtnBox>li>a").click();
                 }); 
-            },800*select.length) ;
+            },800*selectList.length) ;
 			//退出
 			setTimeout(function(){
 				console.log(JSON.stringify(buyUrl));
                phantom.exit();
-            },800*(select.length+1)) ;
+            },800*(selectList.length+1)) ;
         },1000);
 		
     });

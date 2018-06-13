@@ -11,7 +11,7 @@ var settings = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
   }
 };  
-page.settings.loadImages = true;
+page.settings.loadImages = false;
 page.settings.resourceTimeout = 20000; 
 window.setTimeout(function () {
             phantom.exit();
@@ -32,7 +32,7 @@ function login(){
                 $("input[name='user']").val(userName);
                 $("input[name='password']").val(password);
                 $("input[type='submit']").click();
-            },user.userName,user.password);
+            },user.userName,user.password);  
         }
         setTimeout(function(){
             var loginStatus = page.evaluate(function(){
@@ -41,7 +41,7 @@ function login(){
                     return true;
                 }
                 return false;
-            });
+            });  
             if(loginStatus){
                 console.log(JSON.stringify(page.cookies));
             }else{

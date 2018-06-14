@@ -34,12 +34,13 @@ page.settings.resourceTimeout = 8000;
 page.onAlert = function(test){
     console.log(test);
 }
-page.onResourceRequested = function(requestData){
+page.onResourceRequested = function(requestData,networkRequest){
 	var fdStart = requestData.url.indexOf("https://cart.mi.com/cart/add/");
 	if(fdStart == 0){
 		buyUrl[buyUrl.length] = requestData.url;
+		//networkRequest.abort();
 	}
-	
+
 }
 
 function start(goodsUrl,selectList){
@@ -55,7 +56,6 @@ function buyGoods(goodsUrl,selectList){
              page.injectJs("./zepto.min.js",function(){
              });
 			//选择版本颜色保障服务等	
-             var u = 0;
 			for (var i = 0;i<selectList.length;i++){
 				setTimeout(function(){
 					page.evaluate(function(i,j){

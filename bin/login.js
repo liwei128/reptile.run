@@ -37,15 +37,19 @@ function login(){
         setTimeout(function(){
             var loginStatus = page.evaluate(function(){
                 var user = $("#J_userInfo>span.user").html();
+				var error = $("span.error-con").html();
+				if(error){
+					return "pwd";
+				}
                 if(user){
-                    return true;
+                    return "ok";
                 }
-                return false;
+                return "cache";
             });  
-            if(loginStatus){
+            if(loginStatus == "ok"){
                 console.log(JSON.stringify(page.cookies));
             }else{
-				console.log(false);
+				console.log(loginStatus);
 			}
             phantom.exit();
         }, 5000);

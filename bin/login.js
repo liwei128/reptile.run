@@ -46,6 +46,7 @@ function login(){
                 }
                 return "cache";
             });  
+			page.render("debug.png");  
             if(loginStatus == "ok"){
                 console.log(JSON.stringify(page.cookies));
             }else{

@@ -3,14 +3,7 @@ var url = "https://account.xiaomi.com/pass/serviceLogin?callback=https%3A%2F%2Fo
 var user = JSON.parse(fs.read(fs.workingDirectory+'/config/user.json'));
 
 var page = require('webpage').create();    
-var settings = {
-  operation: "GET",
-  encoding: "utf-8",
-  headers: {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-  }
-};  
+ 
 page.settings.loadImages = false;
 page.settings.resourceTimeout = 20000; 
 window.setTimeout(function () {
@@ -24,7 +17,7 @@ page.onAlert = function(test){
 
 function login(){
     phantom.clearCookies();
-    page.open(url,settings,function (status) { 
+    page.open(url,function (status) { 
         if (status == 'success') { 
             page.injectJs("./zepto.min.js",function(){
             });
@@ -36,27 +29,36 @@ function login(){
         }
         setTimeout(function(){
             var loginStatus = page.evaluate(function(){
-                var user = $("#J_userInfo>span.user").html();
 				var error = $("span.error-con").html();
 				if(error){
-					return "pwd";
+					return false;
+				}else{
+					return true;
 				}
-                if(user){
-                    return "ok";
-                }
-                return "cache";
             });  
-			page.render("debug.png");  
-            if(loginStatus == "ok"){
-                console.log(JSON.stringify(page.cookies));
+            if(loginStatus){
+				if(isSucess(page.cookies)){
+					console.log(JSON.stringify(page.cookies));
+				}else{
+					console.log("cache");
+				}
             }else{
-				console.log(loginStatus);
+				console.log("pwd");
 			}
             phantom.exit();
-        }, 5000);
+        }, 3000);
     
     });
     
+}
+function isSucess(cookies){
+	var ok = false;
+    cookies.forEach(function(cook){  
+        if(cook.name=='userId'){
+			ok =true;
+		}
+    });
+	return ok;
 }
 
 login();
